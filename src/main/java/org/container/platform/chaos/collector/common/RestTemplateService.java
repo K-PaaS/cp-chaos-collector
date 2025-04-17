@@ -13,16 +13,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-
-import javax.jws.soap.SOAPBinding;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Base64;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -46,7 +44,6 @@ public class RestTemplateService {
     private final String commonApiBase64Authorization;
     private final RestTemplate restTemplate;
     protected final PropertyService propertyService;
-    private final CommonService commonService;
     protected final VaultService vaultService;
     protected String base64Authorization;
 
@@ -56,23 +53,21 @@ public class RestTemplateService {
     /**
      * Instantiates a new Rest template service
      *
-     * @param restTemplate                   the rest template
-     * @param propertyService                the property service
+     * @param restTemplate    the rest template
+     * @param propertyService the property service
      */
     @Autowired
     public RestTemplateService(RestTemplate restTemplate,
                                PropertyService propertyService,
-                               CommonService commonService,
                                VaultService vaultService,
                                @Value("${commonApi.authorization.id}") String commonApiAuthorizationId,
                                @Value("${commonApi.authorization.password}") String commonApiAuthorizationPassword
     ) {
         this.restTemplate = restTemplate;
         this.propertyService = propertyService;
-        this.commonService = commonService;
         this.vaultService = vaultService;
         this.commonApiBase64Authorization = "Basic "
-                + Base64Utils.encodeToString(
+                + Base64.getEncoder().encodeToString(
                 (commonApiAuthorizationId + ":" + commonApiAuthorizationPassword).getBytes(StandardCharsets.UTF_8));
     }
 
@@ -96,6 +91,7 @@ public class RestTemplateService {
     public <T> T sendDns(String reqApi, String reqUrl, HttpMethod httpMethod, Object bodyObject, Params params) {
         return sendDns(reqApi, reqUrl, httpMethod, bodyObject, Constants.ACCEPT_TYPE_JSON, MediaType.TEXT_HTML_VALUE, params);
     }
+
     public <T> T sendUsage(String reqApi, String reqUrl, HttpMethod httpMethod, Object bodyObject, Class<T> responseType, Params params) {
         return sendUsage(reqApi, reqUrl, httpMethod, bodyObject, responseType, Constants.ACCEPT_TYPE_JSON, MediaType.APPLICATION_JSON_VALUE, params);
     }
@@ -143,8 +139,8 @@ public class RestTemplateService {
         try {
             resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, responseType);
         } catch (HttpStatusCodeException exception) {
-            LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getRawStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
-            throw new CommonStatusCodeException(Integer.toString(exception.getRawStatusCode()));
+            LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
+            throw new CommonStatusCodeException(Integer.toString(exception.getStatusCode().value()));
         }
 
         if (resEntity.getBody() != null) {
@@ -164,13 +160,13 @@ public class RestTemplateService {
      * <p>
      * (Admin)
      *
-     * @param <T>          the type parameter
-     * @param reqApi       the req api
-     * @param reqUrl       the req url
-     * @param httpMethod   the http method
-     * @param bodyObject   the body object
-     * @param acceptType   the accept type
-     * @param contentType  the content type
+     * @param <T>         the type parameter
+     * @param reqApi      the req api
+     * @param reqUrl      the req url
+     * @param httpMethod  the http method
+     * @param bodyObject  the body object
+     * @param acceptType  the accept type
+     * @param contentType the content type
      * @return the t
      */
     public <T> T sendDns(String reqApi, String reqUrl, HttpMethod httpMethod, Object bodyObject, String acceptType, String contentType, Params params) {
@@ -196,7 +192,7 @@ public class RestTemplateService {
             try {
                 return (ResponseEntity<T>) restTemplate.exchange(reqUrl, httpMethod, reqEntity, String.class);
             } catch (HttpStatusCodeException exception) {
-                LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getRawStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
+                LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
                 return null;
             } catch (Exception exception) {
                 LOGGER.error("Unexpected error occurred API Call URL : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getMessage()));
@@ -210,8 +206,8 @@ public class RestTemplateService {
             long elapsedTime = System.currentTimeMillis() - startTime;
 
             if (elapsedTime <= TimeUnit.SECONDS.toMillis(1)) {
-                    LOGGER.info("Response received within 1 second: {}", resEntity);
-                    return (T) Integer.valueOf(1);
+                LOGGER.info("Response received within 1 second: {}", resEntity);
+                return (T) Integer.valueOf(1);
             } else {
                 LOGGER.error("Response took longer than 1 second: {}", elapsedTime);
                 return (T) Integer.valueOf(0);
@@ -263,7 +259,7 @@ public class RestTemplateService {
         try {
             resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, responseType);
         } catch (HttpStatusCodeException exception) {
-            LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getRawStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
+            LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
             return null;
         }
 
@@ -311,8 +307,8 @@ public class RestTemplateService {
         try {
             resEntity = restTemplate.exchange(baseUrl + reqUrl, httpMethod, reqEntity, responseType);
         } catch (HttpStatusCodeException exception) {
-            LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getRawStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
-            throw new CommonStatusCodeException(Integer.toString(exception.getRawStatusCode()));
+            LOGGER.info("HttpStatusCodeException API Call URL : {}, errorCode : {}, errorMessage : {}", CommonUtils.loggerReplace(reqUrl), CommonUtils.loggerReplace(exception.getStatusCode()), CommonUtils.loggerReplace(exception.getMessage()));
+            throw new CommonStatusCodeException(Integer.toString(exception.getStatusCode().value()));
         }
 
         if (resEntity.getBody() == null) {
@@ -390,7 +386,7 @@ public class RestTemplateService {
     }
 
     /**
-     *Request URL 파라미터 설정 (Set Request URL Parameters)
+     * Request URL 파라미터 설정 (Set Request URL Parameters)
      *
      * @param reqApi the reqApi
      */

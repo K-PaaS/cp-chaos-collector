@@ -4,6 +4,8 @@ import org.container.platform.chaos.collector.common.Constants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.Assert;
 
+import java.io.Serial;
+
 /**
  * PortalGrantedAuthority 클래스
  *
@@ -12,6 +14,7 @@ import org.springframework.util.Assert;
  * @since 2024-08-30
  */
 public class PortalGrantedAuthority implements GrantedAuthority {
+    @Serial
     private static final long serialVersionUID = 21301223123L;
     private final String id;
     private final String type;

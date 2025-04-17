@@ -2,7 +2,6 @@ package org.container.platform.chaos.collector.common.model;
 
 import lombok.Data;
 import org.container.platform.chaos.collector.scheduler.custom.Quantity;
-
 import java.util.List;
 import java.util.Map;
 

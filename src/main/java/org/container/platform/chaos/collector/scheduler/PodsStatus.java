@@ -3,7 +3,6 @@ package org.container.platform.chaos.collector.scheduler;
 import lombok.Data;
 import org.container.platform.chaos.collector.common.model.CommonCondition;
 import org.container.platform.chaos.collector.common.model.ContainerStatusesItem;
-
 import java.util.List;
 
 /**

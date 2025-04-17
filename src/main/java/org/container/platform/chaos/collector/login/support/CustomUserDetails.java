@@ -3,7 +3,6 @@ package org.container.platform.chaos.collector.login.support;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 
 /**
