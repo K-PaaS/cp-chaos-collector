@@ -1,5 +1,7 @@
 package org.container.platform.chaos.collector.exception;
 
+import java.io.Serial;
+
 /**
  * Cp Common API Exception Model 클래스
  *
@@ -8,6 +10,7 @@ package org.container.platform.chaos.collector.exception;
  * @since 2024-08-30
  **/
 public class CpCommonAPIException extends BaseBizException {
+	@Serial
 	private static final long serialVersionUID = -1288712633779609678L;
 
 	public CpCommonAPIException(String errorCode, String errorMessage) {

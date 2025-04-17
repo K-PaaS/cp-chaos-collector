@@ -2,7 +2,6 @@ package org.container.platform.chaos.collector.scheduler;
 
 import lombok.Data;
 import org.container.platform.chaos.collector.scheduler.custom.Quantity;
-
 import java.util.Map;
 
 /**
@@ -16,14 +15,6 @@ import java.util.Map;
 public class ContainerMetrics {
     private String name;
     private Map<String, Quantity> usage;
-
-    public String getName() {
-        return name;
-    }
-
-    public Map<String, Quantity> getUsage() {
-        return usage;
-    }
 
     public void setName(String name) {
         this.name = name;

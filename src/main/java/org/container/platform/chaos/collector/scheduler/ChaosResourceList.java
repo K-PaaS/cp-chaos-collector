@@ -1,9 +1,8 @@
-package org.container.platform.chaos.collector.chaos;
+package org.container.platform.chaos.collector.scheduler;
 
 import lombok.Builder;
 import lombok.Data;
 import org.container.platform.chaos.collector.common.model.CommonItemMetaData;
-
 import java.util.List;
 
 /**

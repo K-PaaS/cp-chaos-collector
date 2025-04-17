@@ -20,7 +20,7 @@ public class ChaosResourceUsageId {
 
     @JsonCreator
     public ChaosResourceUsageId(
-            @JsonProperty("id") long resourceId,
+            @JsonProperty("resourceId") long resourceId,
             @JsonProperty("measurementTime") String measurementTime
     ) {
         this.resourceId = resourceId;

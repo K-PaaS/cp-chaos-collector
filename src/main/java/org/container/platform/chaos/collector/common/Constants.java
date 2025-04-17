@@ -1,7 +1,6 @@
 package org.container.platform.chaos.collector.common;
 
 import org.springframework.http.MediaType;
-
 import java.util.HashMap;
 import java.util.Map;
 

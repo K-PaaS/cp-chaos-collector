@@ -2,7 +2,6 @@ package org.container.platform.chaos.collector.nodes;
 
 import lombok.Data;
 import org.container.platform.chaos.collector.common.model.CommonItemMetaData;
-
 import java.util.List;
 
 

@@ -7,7 +7,6 @@ import org.container.platform.chaos.collector.common.Constants;
 import org.container.platform.chaos.collector.common.model.*;
 import org.container.platform.chaos.collector.pods.support.ContainerStatusesItem;
 import org.container.platform.chaos.collector.pods.support.PodsStatus;
-
 import java.util.List;
 import java.util.Map;
 

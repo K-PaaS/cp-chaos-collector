@@ -5,7 +5,6 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import org.apache.commons.lang3.ObjectUtils;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -21,7 +20,7 @@ import java.util.Objects;
 public class Quantity {
 
     private final BigDecimal number;
-    private Format format;
+    private final Format format;
 
     public enum Format {
         DECIMAL_EXPONENT(10),

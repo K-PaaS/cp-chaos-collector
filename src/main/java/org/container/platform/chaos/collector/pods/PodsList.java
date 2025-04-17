@@ -3,7 +3,6 @@ package org.container.platform.chaos.collector.pods;
 import lombok.Data;
 import org.container.platform.chaos.collector.common.model.CommonItemMetaData;
 import org.container.platform.chaos.collector.pods.support.PodsListItem;
-
 import java.util.List;
 import java.util.Map;
 

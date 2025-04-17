@@ -27,12 +27,12 @@ public class GlobalControllerExceptionHandler {
     public ErrorMessage handleException(HttpClientErrorException ex) {
         LOGGER.info("HttpClientErrorException >>> " + CommonUtils.loggerReplace(ex.getLocalizedMessage()));
         for (CommonStatusCode code : CommonStatusCode.class.getEnumConstants()) {
-            if(code.getCode() == ex.getRawStatusCode()) {
+            if(code.getCode() == ex.getStatusCode().value()) {
                 return new ErrorMessage(Constants.RESULT_STATUS_FAIL, code.getMsg(), code.getCode(), code.getMsg());
             }
         }
 
-        return new ErrorMessage(Constants.RESULT_STATUS_FAIL, ex.getStatusText(), ex.getRawStatusCode(), ex.getResponseBodyAsString());
+        return new ErrorMessage(Constants.RESULT_STATUS_FAIL, ex.getStatusText(), ex.getStatusCode().value(), ex.getResponseBodyAsString());
     }
 }
 

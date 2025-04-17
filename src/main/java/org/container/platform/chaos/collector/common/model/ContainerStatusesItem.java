@@ -1,7 +1,6 @@
 package org.container.platform.chaos.collector.common.model;
 
 import lombok.Data;
-
 import java.util.Map;
 
 /**

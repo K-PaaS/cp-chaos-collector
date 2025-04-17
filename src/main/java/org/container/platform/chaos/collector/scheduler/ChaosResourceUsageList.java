@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import org.container.platform.chaos.collector.common.model.CommonItemMetaData;
-
 import java.util.List;
 
 /**
